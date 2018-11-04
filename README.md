@@ -178,6 +178,39 @@ Another part of compiled `switch enum` IL code that is more efficient is with ju
                         IL_0057)
 ```
 
+vs
+
+```il
+  IL_0002:  ldloc.0
+  IL_0003:  brfalse.s  IL_0079
+  IL_0005:  ldloc.0
+  IL_0006:  isinst     Minsk.CodeAnalysis.Binding.BoundLiteralExpression
+  IL_000b:  dup
+  IL_000c:  stloc.1
+  IL_000d:  brtrue.s   IL_003b
+  IL_000f:  ldloc.0
+  IL_0010:  isinst     Minsk.CodeAnalysis.Binding.BoundVariableExpression
+  IL_0015:  dup
+  IL_0016:  stloc.2
+  IL_0017:  brtrue.s   IL_0047
+  IL_0019:  ldloc.0
+  IL_001a:  isinst     Minsk.CodeAnalysis.Binding.BoundAssignmentExpression
+  IL_001f:  dup
+  IL_0020:  stloc.3
+  IL_0021:  brtrue.s   IL_0053
+  IL_0023:  ldloc.0
+  IL_0024:  isinst     Minsk.CodeAnalysis.Binding.BoundUnaryExpression
+  IL_0029:  dup
+  IL_002a:  stloc.s    V_4
+  IL_002c:  brtrue.s   IL_005f
+  IL_002e:  ldloc.0
+  IL_002f:  isinst     Minsk.CodeAnalysis.Binding.BoundBinaryExpression
+  IL_0034:  dup
+  IL_0035:  stloc.s    V_5
+  IL_0037:  brfalse.s  IL_0079
+  IL_0039:  br.s       IL_006c
+```
+
 >switch ( t1, t2 … tN )
 >
 >The switch instruction implements a jump table. The format of the instruction is an unsigned
