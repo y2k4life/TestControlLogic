@@ -6,7 +6,7 @@ Turns out with Pattern Matching casting is only done once and I will explain tha
 
 ## Analyzing the Code
 
-I decided to write some code, look at IL, and do some benchmarks. My goal was to compare and analyze the following.
+I decided to write some code (copied from Minsk), look at IL, and do some benchmarks. My goal was to compare and analyze the following.
 
 ```c#
 //
@@ -102,7 +102,7 @@ Intel Core i7-7820HK CPU 2.90GHz (Kaby Lake), 1 CPU, 8 logical and 4 physical co
 
 ## Analyzing IL code
 
-I looked the IL code generated for Pattern Matching to see if casting was done multiple times. Looking at the benchmarks I doubted that. If casting was done each time the logic as I reasoned would be a `try catch`. Try to cast `foo` to `bar` if that is successful then return `bar` if an error is thrown then catch and return `null`. I wrote code to do the `try catch` benchmarked it at 100 times and took about 19ms.
+I looked at the IL code generated for Pattern Matching to see if casting was done multiple times. Looking at the benchmarks I doubted that. If casting was done each time the logic as I reasoned would be a `try catch`. Try to cast `foo` to `bar` if that is successful then return `bar` if an error is thrown then catch and return `null`. I wrote code to do the `try catch` benchmarked it at 100 times and took about 19ms.
 
 ```IL
   IL_0000:  ldarg.1                  // I think this will take arg1 - node
