@@ -167,7 +167,7 @@ vs
 .locals init (valuetype Minsk.CodeAnalysis.Binding.BoundNodeKind V_0)
 ```
 
-Another part of code where the compiled `switch enum` IL code is more efficient is with using a jump table. An enum being an `int` complies to a jump table instead of the 26 lines of code to push/pop and compare when using Pattern Matching. There is about 5 lines of code with Pattern Matching per test which with Minsk could get up to about 105 lines of code compared to 21 lines of code when using `switch enum`
+Another part of compiled `switch enum` IL code that is more efficient is with jump logic, because it uses a jump table. An enum being an `int` complies to a jump table with one entry for every `case` statement. It becomes a look up table. Instead of the 5 lines of code to push/pop and compare when using Pattern Matching. Minsk could have 21 possibilities which is 105 lines of IL code for Pattern Matching compared to 21 lines when using `switch enum`.
 
 ```IL
   IL_0008:  switch     (
@@ -177,6 +177,16 @@ Another part of code where the compiled `switch enum` IL code is more efficient 
                         IL_004a,
                         IL_0057)
 ```
+
+>The switch instruction implements a jump table. The format of the instruction is an unsigned
+int32 representing the number of targets N, followed by N int32 values specifying jump targets:
+these targets are represented as offsets (positive or negative) from the beginning of the
+instruction following this switch instruction.
+>
+>The switch instruction pops value off the stack and compares it, as an unsigned integer, to n. If
+value is less than n, execution is transferred to the value’th target, where targets are numbered
+from 0 (i.e., a value of 0 takes the first target, a value of 1 takes the second target, and so on). If
+value is not less than n, execution continues at the next instruction (fall through).
 
 ## Conclusion
 
