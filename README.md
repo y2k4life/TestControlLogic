@@ -113,7 +113,7 @@ I looked at the IL code generated for Pattern Matching to see if casting was don
   IL_0023:  ldloc.0                  // load var 0 (node) on to the stack
   IL_0024:  isinst     Minsk.CodeAnalysis.Binding.BoundUnaryExpression          // test type if match then cast and push onto stack otherwise push null onto stack
   IL_0029:  dup
-  IL_002a:  stloc.s    V_4           // store the value on the stack to V_5
+  IL_002a:  stloc.s    V_4           // store the value on the stack to V_4
   IL_002c:  brtrue.s   IL_005f       // branch if matched
   IL_002e:  ldloc.0                  // load var 0 (node) on to the stack
   IL_002f:  isinst     Minsk.CodeAnalysis.Binding.BoundBinaryExpression         // test type if match then cast and push onto stack otherwise push null onto stack
