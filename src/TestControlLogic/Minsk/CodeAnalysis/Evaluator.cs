@@ -1,6 +1,7 @@
 ﻿using Minsk.CodeAnalysis.Binding;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Minsk.CodeAnalysis
 {
@@ -30,7 +31,7 @@ namespace Minsk.CodeAnalysis
 
         protected object EvaluateVariableExpression(BoundVariableExpression v)
         {
-            return _varialbes[v.Variable];
+            return _varialbes.FirstOrDefault(kv => kv.Key.Name == v.Variable.Name).Value;
         }
 
         protected object EvaluateAssignmentExpression(BoundAssignmentExpression a)
