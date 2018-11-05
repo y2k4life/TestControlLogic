@@ -86,9 +86,9 @@ return null
 
 ## Benchmarks
 
-The benchmark results below are from calling the methods above with the last scenario being the one to satisfy. Forcing the worse case scenario of having to test all possibilities until the last one. The benchmarks called the methods 100,000 times and then 500,000 times.
+The benchmark results below are from calling the methods above with forcing the last test statement being the one to satisfy. Forcing the worse case scenario of having to test all possibilities. The benchmarks called the methods 100,000 times and then 500,000 times. **Update** this turns out not to be true, CPU does optimization and will short circuit the intended results. Randomization was added. I wanted the test to be identical which I can't guarantee with randomization, but it is a trade off to avoid CPU optimization.
 
-It is interesting that there is no performance hit between Pattern Matching and `enum` with casting. What was interesting was the performance of using `if`.
+Pattern matching is faster, but that does not me the IL code is efficient. I will also have more updates with there are more possibilities beyond the 5 we have now.
 
 ``` ini
 
