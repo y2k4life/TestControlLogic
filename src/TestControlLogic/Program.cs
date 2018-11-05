@@ -3,28 +3,35 @@ using BenchmarkDotNet.Running;
 using Minsk.CodeAnalysis;
 using Minsk.CodeAnalysis.Binding;
 using Minsk.CodeAnalysis.Syntax;
+using System;
 using System.Collections.Generic;
 
 namespace ConsoleApp
 {
     public class SwitchVsIfEnum
     {
-        private readonly BoundBinaryExpression _expression;
+        private readonly List<BoundExpression> _expressions;
 
         [Params(100000, 500000)]
         public int N;
 
         public SwitchVsIfEnum()
         {
-            var op = BoundBinaryOperator.Bind(SyntaxKind.PlusToken, typeof(int), typeof(int));
-            _expression = new BoundBinaryExpression(new BoundLiteralExpression(1), op, new BoundLiteralExpression(2));
+            _expressions = new List<BoundExpression>()
+            {
+                new BoundLiteralExpression(true),
+                new BoundVariableExpression(new VariableSymbol("a", typeof(int))),
+                new BoundAssignmentExpression(new VariableSymbol("b", typeof(int)), new BoundLiteralExpression(1)),
+                new BoundBinaryExpression(new BoundLiteralExpression(1), BoundBinaryOperator.Bind(SyntaxKind.PlusToken, typeof(int), typeof(int)), new BoundLiteralExpression(2)),
+                new BoundUnaryExpression(BoundUnaryOperator.Bind(SyntaxKind.PlusToken, typeof(int)), new BoundLiteralExpression(1)),
+            };
         }
 
         [Benchmark]
         public void Switch_Pattern_Matching()
         {
             var varialbes = new Dictionary<VariableSymbol, object>();
-            var evaluator = new SwitchPatternEvaluator(_expression, varialbes);
+            var evaluator = new SwitchPatternEvaluator(_expressions[4], varialbes);
 
             for (int i = 0; i < N; i++)
             {
@@ -36,7 +43,7 @@ namespace ConsoleApp
         public void Switch_Enum_Casting()
         {
             var varialbes = new Dictionary<VariableSymbol, object>();
-            var evaluator = new SwitchPatternEvaluator(_expression, varialbes);
+            var evaluator = new SwitchEnumEvaluator(_expressions[4], varialbes);
 
             for (int i = 0; i < N; i++)
             {
@@ -48,7 +55,7 @@ namespace ConsoleApp
         public void If_Pattern_Matching()
         {
             var varialbes = new Dictionary<VariableSymbol, object>();
-            var evaluator = new IfPatternEvaluator(_expression, varialbes);
+            var evaluator = new IfPatternEvaluator(_expressions[4], varialbes);
 
             for (int i = 0; i < N; i++)
             {
@@ -60,7 +67,7 @@ namespace ConsoleApp
         public void If_Enum_Casting()
         {
             var varialbes = new Dictionary<VariableSymbol, object>();
-            var evaluator = new IfEnumEvaluator(_expression, varialbes);
+            var evaluator = new IfEnumEvaluator(_expressions[4], varialbes);
 
             for (int i = 0; i < N; i++)
             {
@@ -68,28 +75,69 @@ namespace ConsoleApp
             }
         }
 
-        public void If_Using_As()
+        [Benchmark]
+        public void Random_Switch_Pattern_Matching()
         {
             var varialbes = new Dictionary<VariableSymbol, object>();
-            var evaluator = new NestedIfCastingEvaluator(_expression, varialbes);
+            var rnd = new Random(DateTime.Now.Second);
 
             for (int i = 0; i < N; i++)
             {
+                varialbes.Clear();
+                varialbes.Add(new VariableSymbol("a", typeof(int)), 1);
+                var index = rnd.Next(0, 4);
+                var evaluator = new SwitchPatternEvaluator(_expressions[index], varialbes);
                 evaluator.Evaluate();
             }
         }
 
-        public void Try_Catch_Casting()
+        [Benchmark]
+        public void Random_Switch_Enum_Casting()
         {
             var varialbes = new Dictionary<VariableSymbol, object>();
-            var evaluator = new CastingEvaluator(_expression, varialbes);
+            var rnd = new Random(DateTime.Now.Second);
 
             for (int i = 0; i < N; i++)
             {
+                varialbes.Clear();
+                varialbes.Add(new VariableSymbol("a", typeof(int)), 1);
+                var index = rnd.Next(0, 4);
+                var evaluator = new SwitchEnumEvaluator(_expressions[index], varialbes);
                 evaluator.Evaluate();
             }
         }
 
+        [Benchmark]
+        public void Random_If_Pattern_Matching()
+        {
+            var varialbes = new Dictionary<VariableSymbol, object>();
+            var rnd = new Random(DateTime.Now.Second);
+
+            for (int i = 0; i < N; i++)
+            {
+                varialbes.Clear();
+                varialbes.Add(new VariableSymbol("a", typeof(int)), 1);
+                var index = rnd.Next(0, 4);
+                var evaluator = new IfPatternEvaluator(_expressions[index], varialbes);
+                evaluator.Evaluate();
+            }
+        }
+
+        [Benchmark]
+        public void Random_If_Enum_Casting()
+        {
+            var varialbes = new Dictionary<VariableSymbol, object>();
+            var rnd = new Random(DateTime.Now.Second);
+
+            for (int i = 0; i < N; i++)
+            {
+                varialbes.Clear();
+                varialbes.Add(new VariableSymbol("a", typeof(int)), 1);
+                var index = rnd.Next(0, 4);
+                var evaluator = new IfEnumEvaluator(_expressions[index], varialbes);
+                evaluator.Evaluate();
+            }
+        }
     }
 
     class Program
