@@ -84,7 +84,7 @@ if (node.Kind == BoundNodeKind.LiteralExpression)
 return null
 ```
 
-## Benchmarks
+## Benchmark Testing
 
 The benchmark results below are from calling the methods above with forcing the last test statement being the one to satisfy. Forcing the worse case scenario of having to test all possibilities. The benchmarks called the methods 100,000 times and then 500,000 times. **Update** this turns out not to be true, CPU does optimization and will short circuit the intended results. Randomization was added. I wanted the test to be identical which I can't guarantee with randomization, but it is a trade off to avoid CPU optimization.
 
