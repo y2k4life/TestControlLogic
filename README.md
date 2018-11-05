@@ -1,5 +1,14 @@
 # Control Logic and Patter Matching
 
+---
+
+**UPDATE 11-04-2018**
+
+I made a major blunder on the test which lead me to believe `enum` and Pattern Matching are equal. **They are not!!!** I ran the same test for both. I fixed that bug. I also added Randomizing test seggested by a reader. My first thought was that I wanted to make sure all test are equal and to me randomizing woudl not guarantee that, but there is this thing [Branch Prediction](https://stackoverflow.com/a/11227902/3764814) which optimizes branching code which defeats what I was trying to do. By repeating the same jump over and over the CPU optimized that and creates a shortcut.
+
+---
+## Summary
+
 Following along with [@terrajobst](https://github.com/terrajobst) as he builds a compiler [Minsk](https://github.com/terrajobst/minsk) I suggested using [Pattern Matching](https://docs.microsoft.com/en-us/dotnet/csharp/pattern-matching) for a block of code. The discussion in my PR was around efficiency and the difference of using an `enum` with a `switch` statement instead of using Pattern Matching. The theory is that an enum/int would only jump once and cast only once. The theory is that pattern matching would do multiple tests and jumps and would have to cast for each `case` statement. I started to ponder why have Pattern Matching if it was inefficient and doing multiple casting when testing against a type. One alternative to Pattern Matching is to add a `Kind` property to an object of an `enum` type then do a cast in the `case` statement.
 
 Turns out with Pattern Matching casting is only done once and I will explain that below. It does turn out though that Pattern Matching compiled to IL code has some inefficiencies.
@@ -82,23 +91,34 @@ The benchmark results below are from calling the methods above with the last sce
 It is interesting that there is no performance hit between Pattern Matching and `enum` with casting. What was interesting was the performance of using `if`.
 
 ``` ini
+
 BenchmarkDotNet=v0.11.2, OS=Windows 10.0.17134.345 (1803/April2018Update/Redstone4)
 Intel Core i7-7820HK CPU 2.90GHz (Kaby Lake), 1 CPU, 8 logical and 4 physical cores
 .NET Core SDK=2.1.500-preview-009335
   [Host]     : .NET Core 2.1.5 (CoreCLR 4.6.26919.02, CoreFX 4.6.26919.02), 64bit RyuJIT  [AttachedDebugger]
   DefaultJob : .NET Core 2.1.5 (CoreCLR 4.6.26919.02, CoreFX 4.6.26919.02), 64bit RyuJIT
-```
 
-| Method                      | N          | Mean         | Error         | StdDev        |
-| --------------------------- | ---------- | -----------: | ------------: | ------------: |
-| **Switch_Pattern_Matching** | **100000** | **1.537 ms** | **0.0151 ms** | **0.0134 ms** |
-| Switch_Enum_Casting         | 100000     | 1.544 ms     | 0.0105 ms     | 0.0098 ms     |
-| If_Pattern_Matching         | 100000     | 1.651 ms     | 0.0147 ms     | 0.0138 ms     |
-| If_Enum_Casting             | 100000     | 2.595 ms     | 0.0191 ms     | 0.0160 ms     |
-| **Switch_Pattern_Matching** | **500000** | **7.668 ms** | **0.0362 ms** | **0.0339 ms** |
-| Switch_Enum_Casting         | 500000     | 7.683 ms     | 0.0550 ms     | 0.0460 ms     |
-| If_Pattern_Matching         | 500000     | 8.253 ms     | 0.0468 ms     | 0.0415 ms     |
-| If_Enum_Casting             | 500000     | 13.094 ms    | 0.1488 ms     | 0.1319 ms     |
+
+```
+|                         Method |      N |      Mean |     Error |    StdDev |
+|------------------------------- |------- |----------:|----------:|----------:|
+|        **Switch_Pattern_Matching** | **100000** |  **1.197 ms** | **0.0227 ms** | **0.0270 ms** |
+|            Switch_Enum_Casting | 100000 |  1.538 ms | 0.0243 ms | 0.0227 ms |
+|            If_Pattern_Matching | 100000 |  1.157 ms | 0.0230 ms | 0.0264 ms |
+|                If_Enum_Casting | 100000 |  1.862 ms | 0.0170 ms | 0.0159 ms |
+| **Random_Switch_Pattern_Matching** | **100000** | **14.768 ms** | **0.3329 ms** | **0.3963 ms** |
+|     Random_Switch_Enum_Casting | 100000 | 15.258 ms | 0.3213 ms | 0.4709 ms |
+|     Random_If_Pattern_Matching | 100000 | 14.579 ms | 0.2749 ms | 0.2572 ms |
+|         Random_If_Enum_Casting | 100000 | 15.322 ms | 0.0943 ms | 0.0787 ms |
+|        **Switch_Pattern_Matching** | **500000** |  **5.778 ms** | **0.0564 ms** | **0.0527 ms** |
+|            Switch_Enum_Casting | 500000 |  7.697 ms | 0.0803 ms | 0.0671 ms |
+|            If_Pattern_Matching | 500000 |  5.627 ms | 0.0251 ms | 0.0222 ms |
+|                If_Enum_Casting | 500000 |  9.297 ms | 0.0438 ms | 0.0388 ms |
+| **Random_Switch_Pattern_Matching** | **500000** | **71.938 ms** | **0.7353 ms** | **0.6878 ms** |
+|     Random_Switch_Enum_Casting | 500000 | 75.282 ms | 0.9671 ms | 0.9046 ms |
+|     Random_If_Pattern_Matching | 500000 | 72.064 ms | 0.4969 ms | 0.4405 ms |
+|         Random_If_Enum_Casting | 500000 | 76.534 ms | 0.7372 ms | 0.6536 ms |
+
 
 ## Analyzing IL code
 
