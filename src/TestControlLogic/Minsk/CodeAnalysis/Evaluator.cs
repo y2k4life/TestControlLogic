@@ -31,7 +31,7 @@ namespace Minsk.CodeAnalysis
 
         protected object EvaluateVariableExpression(BoundVariableExpression v)
         {
-            return _varialbes.FirstOrDefault(kv => kv.Key.Name == v.Variable.Name).Value;
+            return _varialbes[v.Variable];
         }
 
         protected object EvaluateAssignmentExpression(BoundAssignmentExpression a)

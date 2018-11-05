@@ -12,15 +12,18 @@ namespace ConsoleApp
     {
         private readonly List<BoundExpression> _expressions;
 
+        private readonly VariableSymbol _testVarialbe;
+
         [Params(100000, 500000)]
         public int N;
 
         public SwitchVsIfEnum()
         {
+            _testVarialbe = new VariableSymbol("a", typeof(int));
             _expressions = new List<BoundExpression>()
             {
                 new BoundLiteralExpression(true),
-                new BoundVariableExpression(new VariableSymbol("a", typeof(int))),
+                new BoundVariableExpression(_testVarialbe),
                 new BoundAssignmentExpression(new VariableSymbol("b", typeof(int)), new BoundLiteralExpression(1)),
                 new BoundBinaryExpression(new BoundLiteralExpression(1), BoundBinaryOperator.Bind(SyntaxKind.PlusToken, typeof(int), typeof(int)), new BoundLiteralExpression(2)),
                 new BoundUnaryExpression(BoundUnaryOperator.Bind(SyntaxKind.PlusToken, typeof(int)), new BoundLiteralExpression(1)),
@@ -84,7 +87,7 @@ namespace ConsoleApp
             for (int i = 0; i < N; i++)
             {
                 varialbes.Clear();
-                varialbes.Add(new VariableSymbol("a", typeof(int)), 1);
+                varialbes.Add(_testVarialbe, 10);
                 var index = rnd.Next(0, 4);
                 var evaluator = new SwitchPatternEvaluator(_expressions[index], varialbes);
                 evaluator.Evaluate();
@@ -100,7 +103,7 @@ namespace ConsoleApp
             for (int i = 0; i < N; i++)
             {
                 varialbes.Clear();
-                varialbes.Add(new VariableSymbol("a", typeof(int)), 1);
+                varialbes.Add(_testVarialbe, 10);
                 var index = rnd.Next(0, 4);
                 var evaluator = new SwitchEnumEvaluator(_expressions[index], varialbes);
                 evaluator.Evaluate();
@@ -116,7 +119,7 @@ namespace ConsoleApp
             for (int i = 0; i < N; i++)
             {
                 varialbes.Clear();
-                varialbes.Add(new VariableSymbol("a", typeof(int)), 1);
+                varialbes.Add(_testVarialbe, 10);
                 var index = rnd.Next(0, 4);
                 var evaluator = new IfPatternEvaluator(_expressions[index], varialbes);
                 evaluator.Evaluate();
@@ -132,7 +135,7 @@ namespace ConsoleApp
             for (int i = 0; i < N; i++)
             {
                 varialbes.Clear();
-                varialbes.Add(new VariableSymbol("a", typeof(int)), 1);
+                varialbes.Add(_testVarialbe, 10);
                 var index = rnd.Next(0, 4);
                 var evaluator = new IfEnumEvaluator(_expressions[index], varialbes);
                 evaluator.Evaluate();

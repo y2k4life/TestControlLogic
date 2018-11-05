@@ -102,22 +102,22 @@ Intel Core i7-7820HK CPU 2.90GHz (Kaby Lake), 1 CPU, 8 logical and 4 physical co
 ```
 |                         Method |      N |      Mean |     Error |    StdDev |
 |------------------------------- |------- |----------:|----------:|----------:|
-|        **Switch_Pattern_Matching** | **100000** |  **1.197 ms** | **0.0227 ms** | **0.0270 ms** |
-|            Switch_Enum_Casting | 100000 |  1.538 ms | 0.0243 ms | 0.0227 ms |
-|            If_Pattern_Matching | 100000 |  1.157 ms | 0.0230 ms | 0.0264 ms |
-|                If_Enum_Casting | 100000 |  1.862 ms | 0.0170 ms | 0.0159 ms |
-| **Random_Switch_Pattern_Matching** | **100000** | **14.768 ms** | **0.3329 ms** | **0.3963 ms** |
-|     Random_Switch_Enum_Casting | 100000 | 15.258 ms | 0.3213 ms | 0.4709 ms |
-|     Random_If_Pattern_Matching | 100000 | 14.579 ms | 0.2749 ms | 0.2572 ms |
-|         Random_If_Enum_Casting | 100000 | 15.322 ms | 0.0943 ms | 0.0787 ms |
-|        **Switch_Pattern_Matching** | **500000** |  **5.778 ms** | **0.0564 ms** | **0.0527 ms** |
-|            Switch_Enum_Casting | 500000 |  7.697 ms | 0.0803 ms | 0.0671 ms |
-|            If_Pattern_Matching | 500000 |  5.627 ms | 0.0251 ms | 0.0222 ms |
-|                If_Enum_Casting | 500000 |  9.297 ms | 0.0438 ms | 0.0388 ms |
-| **Random_Switch_Pattern_Matching** | **500000** | **71.938 ms** | **0.7353 ms** | **0.6878 ms** |
-|     Random_Switch_Enum_Casting | 500000 | 75.282 ms | 0.9671 ms | 0.9046 ms |
-|     Random_If_Pattern_Matching | 500000 | 72.064 ms | 0.4969 ms | 0.4405 ms |
-|         Random_If_Enum_Casting | 500000 | 76.534 ms | 0.7372 ms | 0.6536 ms |
+|        **Switch_Pattern_Matching** | **100000** |  **1.229 ms** | **0.0124 ms** | **0.0116 ms** |
+|            Switch_Enum_Casting | 100000 |  1.532 ms | 0.0160 ms | 0.0150 ms |
+|            If_Pattern_Matching | 100000 |  1.359 ms | 0.0109 ms | 0.0091 ms |
+|                If_Enum_Casting | 100000 |  2.001 ms | 0.0236 ms | 0.0221 ms |
+| Random_Switch_Pattern_Matching | 100000 |  9.444 ms | 0.1401 ms | 0.1311 ms |
+|     Random_Switch_Enum_Casting | 100000 |  9.937 ms | 0.0356 ms | 0.0297 ms |
+|     Random_If_Pattern_Matching | 100000 |  9.674 ms | 0.1139 ms | 0.1066 ms |
+|         Random_If_Enum_Casting | 100000 | 10.135 ms | 0.0869 ms | 0.0813 ms |
+|        **Switch_Pattern_Matching** | **500000** |  **6.109 ms** | **0.0552 ms** | **0.0517 ms** |
+|            Switch_Enum_Casting | 500000 |  7.677 ms | 0.1258 ms | 0.1177 ms |
+|            If_Pattern_Matching | 500000 |  6.807 ms | 0.0763 ms | 0.0714 ms |
+|                If_Enum_Casting | 500000 |  9.935 ms | 0.1040 ms | 0.0973 ms |
+| Random_Switch_Pattern_Matching | 500000 | 47.374 ms | 0.6578 ms | 0.5831 ms |
+|     Random_Switch_Enum_Casting | 500000 | 50.786 ms | 0.9834 ms | 0.8717 ms |
+|     Random_If_Pattern_Matching | 500000 | 48.562 ms | 0.9021 ms | 0.7996 ms |
+|         Random_If_Enum_Casting | 500000 | 51.817 ms | 0.8187 ms | 0.7659 ms |
 
 
 ## Analyzing IL code
